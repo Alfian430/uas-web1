@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Perpustakaan Digital</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #3498db;
+            --accent-hover: #2980b9;
+            --bg-color: #f4f6f9;
+            --text-color: #333;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        header {
+            background: var(--primary);
+            color: var(--white);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* PERBAIKAN: Mengatur warna judul di header agar terlihat (Putih) */
+        .logo h2 {
+            color: var(--white);
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            filter: brightness(0) invert(1); /* Make icon white */
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 10px;
+        }
+
+        nav a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        nav a.active, nav a:hover {
+            color: var(--white);
+            background: var(--accent);
+        }
+
+        /* MAIN */
+        main {
+            flex: 1;
+            width: 100%;
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        section {
+            display: none;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        /* IMAGES */
+        .banner {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--accent);
+            margin-bottom: 20px;
+        }
+
+        /* LIST & TEXT */
+        ol {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+        
+        p {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        /* FORMS */
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        button {
+            background: var(--accent);
+            color: var(--white);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.3s;
+            display: block;
+            width: 100%;
+        }
+
+        button:hover {
+            background: var(--accent-hover);
+        }
+
+        /* TABLE */
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: var(--secondary);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--secondary);
+            color: var(--white);
+            text-align: center;
+            padding: 20px;
+            margin-top: auto;
+            font-size: 0.9rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            .logo {
+                margin-bottom: 15px;
+            }
+
+            nav ul {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            nav a {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+
+            .banner {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <!-- Icon buku dari flaticon (gratis) -->
+            <img src="https://cdn-icons-png.flaticon.com/512/29/29302.png" alt="Logo">
+            <h2>Perpustakaan Digital</h2>
+        </div>
+        <nav>
+            <ul>
+                <li><a id="nav-beranda" class="active" onclick="showPage('beranda')">Beranda</a></li>
+                <li><a id="nav-transaksi" onclick="showPage('transaksi')">Transaksi</a></li>
+                <li><a id="nav-profil" onclick="showPage('profil')">Profil</a></li>
+                <li><a id="nav-login" onclick="showPage('login')">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- HALAMAN BERANDA -->
+        <section id="beranda" class="active">
+            <h2>Selamat Datang</h2>
+            
+            <img class="banner" 
+                 src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1200&q=80" 
+                 alt="Perpustakaan">
+
+            <div style="max-width: 800px;">
+                <p>Selamat datang di sistem informasi perpustakaan digital. Silakan ikuti panduan berikut untuk menggunakan aplikasi:</p>
+                <ol>
+                    <li>Lakukan <strong>Login</strong> pada menu Login (Gunakan sembarang username).</li>
+                    <li>Masuk ke menu <strong>Transaksi</strong> untuk mencatat peminjaman buku.</li>
+                    <li>Isi formulir dengan lengkap (Judul, Nama, Kategori, Tanggal).</li>
+                    <li>Klik <strong>Simpan</strong>, data akan muncul pada tabel di bawahnya.</li>
+                    <li>Cek menu <strong>Profil</strong> untuk melihat informasi pengembang.</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- HALAMAN TRANSAKSI -->
+        <section id="transaksi">
+            <h2>Transaksi Peminjaman</h2>
+            
+            <img class="banner" 
+                 src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1200&q=80" 
+                 alt="Books">
+
+            <div class="form-container">
+                <form onsubmit="simpanTransaksi(event)">
+                    <div class="form-group">
+                        <label for="judul">Judul Buku</label>
+                        <input type="text" id="judul" placeholder="Contoh: Laskar Pelangi" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="peminjam">Nama Peminjam</label>
+                        <input type="text" id="peminjam" placeholder="Contoh: Budi Santoso" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="kategori">Kategori Buku</label>
+                        <select id="kategori" required>
+                            <option value="">-- Pilih Kategori --</option>
+                            <option>Fiksi</option>
+                            <option>Teknologi</option>
+                            <option>Sains</option>
+                            <option>Sejarah</option>
+                            <option>Lainnya</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tanggal">Tanggal Peminjaman</label>
+                        <input type="date" id="tanggal" required>
+                    </div>
+
+                    <button type="submit">Simpan Transaksi</button>
+                </form>
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="5%">No</th>
+                            <th>Judul Buku</th>
+                            <th>Peminjam</th>
+                            <th>Kategori</th>
+                            <th>Tanggal</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data">
+                        <!-- MENAMBAHKAN DATA CONTOH AGAR TIDAK KOSONG -->
+                        <tr>
+                            <td>1</td>
+                            <td>Laskar Pelangi</td>
+                            <td>Andi Saputra</td>
+                            <td>Fiksi</td>
+                            <td>2024-01-08</td>
+                            <td><span style="color: #e67e22; font-weight:bold;">Dipinjam</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- HALAMAN PROFIL -->
+        <section id="profil">
+            <h2>Profil Pengembang</h2>
+            
+            <div style="text-align: center;">
+                <img class="profile-img" 
+                     src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80" 
+                     alt="Profile">
+                
+                <h3>ALFIAN DEWA PERMANA</h3>
+                <p style="color: var(--secondary); margin-bottom: 20px;">Mahasiswa Teknik Informatika</p>
+            </div>
+
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; max-width: 600px; margin: 0 auto;">
+                <p><strong>NIM:</strong> 123456789 (Ganti dengan NIM Asli)</p>
+                <p><strong>Mata Kuliah:</strong> Pemrograman Web 1</p>
+                <p><strong>Project:</strong> Aplikasi Perpustakaan Digital (UAS)</p>
+                <p><strong>Deskripsi:</strong> Aplikasi ini dirancang untuk memudahkan proses pencatatan peminjaman buku secara digital dengan antarmuka yang responsif dan mudah digunakan.</p>
+            </div>
+        </section>
+
+        <!-- HALAMAN LOGIN -->
+        <section id="login">
+            <h2>Login Petugas</h2>
+            
+            <div class="form-container" style="max-width: 400px; background: #fff; padding: 0;">
+                <img class="banner" 
+                     style="height: 150px; margin-bottom: 20px;"
+                     src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=1200&q=80" 
+                     alt="Login">
+                
+                <form onsubmit="login(event)">
+                    <div class="form-group">
+                        <label for="user">Username</label>
+                        <input type="text" id="user" placeholder="admin" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pass">Password</label>
+                        <input type="password" id="pass" placeholder="******" required>
+                    </div>
+
+                    <button type="submit">Masuk</button>
+                </form>
+                <p style="text-align: center; margin-top: 15px; font-size: 0.9em; color: #666;">
+                    *Gunakan username & password bebas untuk demo
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Aplikasi Perpustakaan Digital - Alfian Dewa Permana</p>
+    </footer>
+
+    <script>
+        // Navigasi Halaman
+        function showPage(pageId) {
+            document.querySelectorAll("section").forEach(section => {
+                section.classList.remove("active");
+            });
+            
+            const targetSection = document.getElementById(pageId);
+            if (targetSection) {
+                targetSection.classList.add("active");
+            }
+
+            document.querySelectorAll("nav a").forEach(link => {
+                link.classList.remove("active");
+            });
+
+            const navLink = document.getElementById("nav-" + pageId);
+            if (navLink) {
+                navLink.classList.add("active");
+            }
+        }
+
+        // Logic Transaksi
+        let nomorUrut = 2; // Mulai dari 2 karena sudah ada 1 data contoh
+        function simpanTransaksi(event) {
+            event.preventDefault();
+            
+            const judulInput = document.getElementById('judul');
+            const peminjamInput = document.getElementById('peminjam');
+            const kategoriInput = document.getElementById('kategori');
+            const tanggalInput = document.getElementById('tanggal');
+            const tbody = document.getElementById('data');
+
+            if (!judulInput.value || !peminjamInput.value || !kategoriInput.value || !tanggalInput.value) {
+                alert("Mohon lengkapi semua data!");
+                return;
+            }
+
+            const row = `
+                <tr>
+                    <td>${nomorUrut++}</td>
+                    <td>${judulInput.value}</td>
+                    <td>${peminjamInput.value}</td>
+                    <td>${kategoriInput.value}</td>
+                    <td>${tanggalInput.value}</td>
+                    <td><span style="color: #e67e22; font-weight:bold;">Dipinjam</span></td>
+                </tr>
+            `;
+            
+            tbody.innerHTML += row;
+            event.target.reset();
+            alert("Data berhasil disimpan!");
+        }
+
+        // Logic Login
+        function login(event) {
+            event.preventDefault();
+            const userInput = document.getElementById('user');
+            const passInput = document.getElementById('pass');
+
+            if (!userInput.value || !passInput.value) {
+                alert("Username dan Password harus diisi");
+                return;
+            }
+
+            alert("Login Berhasil! Selamat datang, " + userInput.value);
+            showPage('beranda');
+        }
+    </script>
+
+</body>
+</html>
